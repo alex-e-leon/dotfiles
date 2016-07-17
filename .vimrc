@@ -1,22 +1,48 @@
 "Syntax Highlighting
 syntax on
+set nocursorcolumn
+set nocursorline
+set norelativenumber
+syntax sync minlines=256
+set synmaxcol=160
+
+"Setup Linting
+let g:syntastic_check_on_open = 1
+let g:syntastic_scss_checkers = ['scss_lint']
+let g:syntastic_javascript_checkers = ['eslint']
+
+"Change updatetime from 4s to 250ms to make gitgutter more responsive
+set updatetime=250
+
+"Show line numbers
+set number
+
+"Set leader to space
+let mapleader = " "
+
+"Prevent vim re-rendering during macros
+set lazyredraw
 
 "Vimgrep remap
 command! -nargs=1 Find :execute "noautocmd vimgrep /" . <f-args> . "/ ./**/*"
 
-"NerdCommenter remap
-map <C-c> :call NERDComment(0,"toggle")<CR>
-
 "Matchit QuickFix
 :filetype plugin on
 
+"Set OSX system clipboard to work in vim
+set clipboard=unnamed
+
+"Set swapfile directory to home
+set directory=~/.vim/swap//
+
+"Detect .md files as Markdown
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
 "Powerline setup
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 set laststatus=2
 set term=xterm-256color
 
-"NerdtreeShortcuts and config
-map <Leader>n <plug>NERDTreeTabsToggle<CR>
+"Nerdtree config
 let NERDTreeIgnore = ['\.pyc$']
 
 "Vundle Config
@@ -26,28 +52,23 @@ filetype off                   " required!
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 " let Vundle manage Vundle required! 
-Bundle 'gmarik/Vundle.vim'
-Bundle 'jellybeans.vim'
-Bundle 'Syntastic'
-Bundle 'Lokaltog/powerline'
-Bundle 'scrooloose/nerdtree'
-Bundle 'jistr/vim-nerdtree-tabs'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'ctrlp.vim'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'Yggdroot/indentLine'
+Plugin 'gmarik/Vundle.vim'
+Plugin 'jellybeans.vim'
+Plugin 'Syntastic'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'ctrlp.vim'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'Yggdroot/indentLine'
 Plugin 'loremipsum'
+Plugin 'shime/vim-livedown'
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 filetype plugin indent on     " required!
-"
-" Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
-"
 " see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle command are not allowed..
 
 " Try set the color scheme to solarized
 try
@@ -84,7 +105,6 @@ set tabstop=2
 set expandtab
 set list
 set listchars=tab:>-
-let mapleader = '\'
 
 function TabToSpaces( spaces )
   echo a:spaces
@@ -96,3 +116,15 @@ endfunction
 
 command! -nargs=* TabToSpaces call TabToSpaces( '<args>' )
 let g:vim_json_syntax_conceal = 0
+
+"Custom mappings
+
+"ctrl+c Toggle comments
+map <C-c> :call NERDComment(0,"toggle")<CR>
+"Leader+n Toggle file view
+map <Leader>n <plug>NERDTreeTabsToggle<CR>
+"Preview markdown files
+map <Leader>p :LivedownToggle<CR>
+"Move vertically by visual line
+nnoremap j gj
+nnoremap k gk
