@@ -54,7 +54,7 @@ call vundle#rc()
 " let Vundle manage Vundle required! 
 Plugin 'gmarik/Vundle.vim'
 Plugin 'jellybeans.vim'
-Plugin 'Syntastic'
+Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'scrooloose/nerdcommenter'
@@ -116,6 +116,9 @@ endfunction
 
 command! -nargs=* TabToSpaces call TabToSpaces( '<args>' )
 let g:vim_json_syntax_conceal = 0
+
+"Configure livedown
+let g:livedown_port = 1227
 
 "Custom mappings
 
