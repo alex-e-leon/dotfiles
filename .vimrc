@@ -23,9 +23,6 @@ let mapleader = " "
 "Prevent vim re-rendering during macros
 set lazyredraw
 
-"Vimgrep remap
-command! -nargs=1 Find :execute "noautocmd vimgrep /" . <f-args> . "/ ./**/*"
-
 "Matchit QuickFix
 :filetype plugin on
 
@@ -131,3 +128,5 @@ map <Leader>p :LivedownToggle<CR>
 "Move vertically by visual line
 nnoremap j gj
 nnoremap k gk
+"Vimgrep remap
+command! -nargs=1 Find :execute "noautocmd vimgrep /" . <f-args> . "/ ./**/*"
