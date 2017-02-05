@@ -8,6 +8,8 @@ set synmaxcol=160
 
 "Setup Linting
 let g:syntastic_check_on_open = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_wq = 0
 let g:syntastic_scss_checkers = ['scss_lint']
 let g:syntastic_javascript_checkers = ['eslint']
 
@@ -120,6 +122,9 @@ let g:vim_json_syntax_conceal = 0
 "Configure livedown
 let g:livedown_port = 1227
 
+"Configure extra space for comments
+let NERDSpaceDelims=1
+
 "Custom mappings
 
 "ctrl+c Toggle comments
@@ -131,3 +136,6 @@ map <Leader>p :LivedownToggle<CR>
 "Move vertically by visual line
 nnoremap j gj
 nnoremap k gk
+
+nnoremap [ :lnext<CR>
+nnoremap ] :lprev<CR>
