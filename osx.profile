@@ -31,9 +31,24 @@ else
 fi
 
 # Ensure user-installed binaries take precedence
-export PATH=/usr/local/bin:$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 #Bash-completion
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
+fi
+
+#Setp NVM executable
+export NVM_DIR=~/.nvm
+source $(brew --prefix nvm)/nvm.sh
+
+#Setup ls color for OSX
+export CLICOLOR=1
+
+#Setup grep color
+export GREP_OPTIONS='--color=auto'
+
+#Setup adb command
+if [ -d "/Users/alex.leon/Library/Android/sdk/platform-tools" ] ; then
+  export PATH="/Users/alex.leon/Library/Android/sdk/platform-tools:$PATH"
 fi
