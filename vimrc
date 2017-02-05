@@ -70,7 +70,7 @@ filetype plugin indent on     " required!
 " Try set the color scheme to solarized
 try
     set background=dark
-    colorscheme solarized
+    colorscheme jellybean
 catch /E185:/
     colorscheme default
 endtry
