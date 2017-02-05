@@ -25,9 +25,6 @@ let mapleader = " "
 "Prevent vim re-rendering during macros
 set lazyredraw
 
-"Vimgrep remap
-command! -nargs=1 Find :execute "noautocmd vimgrep /" . <f-args> . "/ ./**/*"
-
 "Matchit QuickFix
 :filetype plugin on
 
@@ -75,7 +72,7 @@ filetype plugin indent on     " required!
 " Try set the color scheme to solarized
 try
     set background=dark
-    colorscheme solarized
+    colorscheme jellybean
 catch /E185:/
     colorscheme default
 endtry
@@ -139,3 +136,6 @@ nnoremap k gk
 
 nnoremap [ :lnext<CR>
 nnoremap ] :lprev<CR>
+
+"Vimgrep remap
+command! -nargs=1 Find :execute "noautocmd vimgrep /" . <f-args> . "/ ./**/*"
