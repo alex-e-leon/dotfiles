@@ -42,6 +42,9 @@ fi
 export NVM_DIR=~/.nvm
 source $(brew --prefix nvm)/nvm.sh
 
+#Setp yarn executable
+export PATH="$PATH:`yarn global bin`"
+
 #Setup ls color for OSX
 export CLICOLOR=1
 
