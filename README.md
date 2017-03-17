@@ -15,3 +15,23 @@ Files include:
 ## OSX only
 - .bash_profile
 - .profile
+
+## Terminal config
+Current terminal font: [hack powerline](https://github.com/powerline/fonts)
+Current terminal colorscheme: [IC_Orange_PPL](https://github.com/mbadolato/iTerm2-Color-Schemes)
+
+### Other terminal colorschemes
+- Afterglow
+- Belafonte Night
+- Birds of paradise
+- Espresso
+- Fidoloper
+- Flatland
+- Hybrid
+- IC_Orange_PPL
+- Medallion
+- SeaShells
+- Solarized Dark Dracula
+- SpaceGray Eighties Dull
+- SpaceDust
+- Twilight
