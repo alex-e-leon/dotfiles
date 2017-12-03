@@ -6,13 +6,14 @@ Plug 'junegunn/vim-easy-align'
 Plug 'scrooloose/nerdtree' | Plug 'jistr/vim-nerdtree-tabs'
 Plug 'scrooloose/nerdcommenter'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'loremipsum', { 'on': 'Loremipsum' } 
+Plug 'vim-scripts/loremipsum', { 'on': 'Loremipsum' }
 Plug 'shime/vim-livedown'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'romainl/vim-cool'
 Plug 'w0rp/ale'
+Plug 'reasonml-editor/vim-reason'
 
 " color schemes
 Plug 'AlessandroYorba/Despacio'
@@ -34,6 +35,8 @@ set synmaxcol=160
 "Configure ALE syntax highlighting
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '>-'
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " configure airline to use powerline fonts
 let g:airline_powerline_fonts = 1
@@ -99,9 +102,6 @@ map <Leader>p :LivedownToggle<CR>
 "Move vertically by visual line
 nnoremap j gj
 nnoremap k gk
-
-nnoremap [ :lnext<CR>
-nnoremap ] :lprev<CR>
 
 "Vimgrep remap
 command! -nargs=1 Find :execute "noautocmd vimgrep /" . <f-args> . "/ ./**/*"
