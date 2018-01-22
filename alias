@@ -1,0 +1,11 @@
+#Setup npm-exec for running local npm modules
+alias npm-exec='PATH=$(npm bin):$PATH'
+alias vim=nvim
+
+#Setup user npm login
+alias npm-personal="npm --userconfig=~/.npmrc-personal"
+alias update-boilerplate-npx="npx -p @domain-group/generator-fe-boilerplate -c update-boilerplate"
+alias fe-boilerplate-generator="npx -p yo -p @domain-group/generator-fe-boilerplate -c 'yo @domain-group/fe-boilerplate'"
+
+#Use different AWS profile
+aws-profile() { AWS_DEFAULT_PROFILE="$1"; }

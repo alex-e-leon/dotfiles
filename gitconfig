@@ -17,4 +17,4 @@
 [diff]
 	tool = Kaleidoscope
 [core]
-	editor = /usr/local/bin/vim
+	editor = /usr/local/bin/nvim
