@@ -6,7 +6,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'scrooloose/nerdtree' | Plug 'jistr/vim-nerdtree-tabs'
 Plug 'scrooloose/nerdcommenter'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'loremipsum', { 'on': 'Loremipsum' } 
+Plug 'vimscripts/loremipsum', { 'on': 'Loremipsum' } 
 Plug 'shime/vim-livedown'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
