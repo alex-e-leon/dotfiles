@@ -13,6 +13,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'romainl/vim-cool'
 Plug 'w0rp/ale'
+Plug 'ervandew/supertab'
 
 " color schemes
 Plug 'AlessandroYorba/Despacio'
