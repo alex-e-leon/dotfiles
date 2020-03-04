@@ -6,7 +6,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'scrooloose/nerdtree' | Plug 'jistr/vim-nerdtree-tabs'
 Plug 'scrooloose/nerdcommenter'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'vimscripts/loremipsum', { 'on': 'Loremipsum' } 
+Plug 'vim-scripts/loremipsum', { 'on': 'Loremipsum' } 
 Plug 'shime/vim-livedown'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -14,6 +14,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'romainl/vim-cool'
 Plug 'w0rp/ale'
 Plug 'ervandew/supertab'
+Plug 'jparise/vim-graphql'
+Plug 'leafgarland/typescript-vim'
 
 " color schemes
 Plug 'AlessandroYorba/Despacio'
@@ -35,6 +37,8 @@ set synmaxcol=160
 "Configure ALE syntax highlighting
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '>-'
+let g:ale_fixers = {'javascript': ['eslint'], 'scss': ['stylelint']}
+let g:ale_linters = {'javascript': ['eslint', 'flow', 'flow-language-server', 'jshint', 'standard']}
 
 " configure airline to use powerline fonts
 let g:airline_powerline_fonts = 1
@@ -97,6 +101,8 @@ map <C-c> :call NERDComment(0,"toggle")<CR>
 map <Leader>n <plug>NERDTreeTabsToggle<CR>
 "Preview markdown files
 map <Leader>p :LivedownToggle<CR>
+"Fix lint errors with ALE fixers
+map <Leader>f :ALEFix<CR>
 "Move vertically by visual line
 nnoremap j gj
 nnoremap k gk

@@ -55,3 +55,6 @@ export GREP_OPTIONS='--color=auto'
 if [ -d "/Users/alex.leon/Library/Android/sdk/platform-tools" ] ; then
   export PATH="/Users/alex.leon/Library/Android/sdk/platform-tools:$PATH"
 fi
+
+#Make sure that locale is set properly
+export LC_ALL=en_AU.UTF-8
