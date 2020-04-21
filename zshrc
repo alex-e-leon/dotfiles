@@ -34,7 +34,7 @@ export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 # SET ls colors
 export CLICOLOR=1
-export LSCOLORS="Gxfxcxdxbxegedabagacad"
+export LSCOLORS="Fxfxdxdxcxegedabagacad"
 
 #Setup grep color
 export GREP_OPTIONS='--color=auto'
