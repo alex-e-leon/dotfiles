@@ -5,7 +5,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'junegunn/vim-easy-align'
 Plug 'scrooloose/nerdtree' | Plug 'jistr/vim-nerdtree-tabs'
 Plug 'scrooloose/nerdcommenter'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-scripts/loremipsum', { 'on': 'Loremipsum' } 
 Plug 'shime/vim-livedown'
 Plug 'tpope/vim-fugitive'
@@ -16,6 +15,9 @@ Plug 'w0rp/ale'
 Plug 'ervandew/supertab'
 Plug 'jparise/vim-graphql'
 Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " color schemes
 Plug 'AlessandroYorba/Despacio'
@@ -94,7 +96,29 @@ let g:livedown_port = 1227
 "Configure extra space for comments
 let NERDSpaceDelims=1
 
+"Configure fzf colors
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --colors "path:fg:215,135,95" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>), 1, { 'options': '--color hl:223,hl+:222' }, 0)
+
 "Custom mappings
+"ctrl+p fzf
+map <C-p> :FZF<CR>
 "ctrl+c Toggle comments
 map <C-c> :call NERDComment(0,"toggle")<CR>
 "Leader+n Toggle file view
@@ -109,6 +133,3 @@ nnoremap k gk
 
 nnoremap [ :lnext<CR>
 nnoremap ] :lprev<CR>
-
-"Vimgrep remap
-command! -nargs=1 Find :execute "noautocmd vimgrep /" . <f-args> . "/ ./**/*"
