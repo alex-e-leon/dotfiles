@@ -17,6 +17,11 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+"https://github.com/neoclide/coc-json
+"https://github.com/neoclide/coc-html
+"https://github.com/neoclide/coc-highlight
+"https://github.com/neoclide/coc-jest
+"https://github.com/neoclide/coc-css
 
 " Syntax highlighting
 Plug 'jparise/vim-graphql'
