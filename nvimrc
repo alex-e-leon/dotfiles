@@ -10,15 +10,19 @@ Plug 'shime/vim-livedown'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
-Plug 'romainl/vim-cool'
 Plug 'w0rp/ale'
-Plug 'ervandew/supertab'
-Plug 'jparise/vim-graphql'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
+" Better vim search highlighting
+Plug 'romainl/vim-cool'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+
+" Syntax highlighting
+Plug 'jparise/vim-graphql'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 
 " color schemes
 Plug 'AlessandroYorba/Despacio'
@@ -121,6 +125,34 @@ let g:fzf_colors =
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --colors "path:fg:215,135,95" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>), 1, { 'options': '--color hl:223,hl+:222' }, 0)
+
+" COC settings
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" Use K to show documentation in preview window.
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 "Custom mappings
 "ctrl+p fzf

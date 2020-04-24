@@ -40,6 +40,8 @@ https://brew.sh/
 ```
 \\ neovim
 brew install neovim
+\\ npm base install required for ts-server
+brew install npm 
 \\ antibody zsh plugin manager
 brew install getantibody/tap/antibody
 \\ hack font
