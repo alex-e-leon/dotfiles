@@ -18,6 +18,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'ludovicchabant/vim-gutentags'
 
 " color schemes
 Plug 'AlessandroYorba/Despacio'
@@ -40,7 +41,9 @@ set synmaxcol=160
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '>-'
 let g:ale_fixers = {'javascript': ['eslint'], 'scss': ['stylelint']}
-let g:ale_linters = {'javascript': ['eslint', 'flow', 'flow-language-server', 'jshint', 'standard']}
+let g:ale_linters = {
+\ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jshint', 'standard'],
+\ 'typescript': ['tsserver', 'tslint'] }
 
 " configure airline to use powerline fonts
 let g:airline_powerline_fonts = 1
@@ -93,6 +96,10 @@ command! -nargs=* TabToSpaces call TabToSpaces( '<args>' )
 "Configure livedown
 let g:livedown_port = 1227
 
+"Add gutentag/ctag progress to statusline
+set statusline+=%{gutentags#statusline()}
+let g:gutentags_ctags_tagfile = '.git/ctags'
+
 "Configure extra space for comments
 let NERDSpaceDelims=1
 
@@ -111,7 +118,6 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
-
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --colors "path:fg:215,135,95" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>), 1, { 'options': '--color hl:223,hl+:222' }, 0)
