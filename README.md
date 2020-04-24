@@ -56,6 +56,8 @@ brew install ripgrep
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim  
 \\ Install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+\\ install livedown
+npm i -g livedown
 ```
 
 ### Finish
