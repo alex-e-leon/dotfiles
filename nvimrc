@@ -15,7 +15,6 @@ Plug 'w0rp/ale'
 Plug 'romainl/vim-cool'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 
@@ -100,10 +99,6 @@ command! -nargs=* TabToSpaces call TabToSpaces( '<args>' )
 "Configure livedown
 let g:livedown_port = 1227
 
-"Add gutentag/ctag progress to statusline
-set statusline+=%{gutentags#statusline()}
-let g:gutentags_ctags_tagfile = '.git/ctags'
-
 "Configure extra space for comments
 let NERDSpaceDelims=1
 
@@ -153,6 +148,11 @@ function! s:show_documentation()
   endif
 endfunction
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 "Custom mappings
 "ctrl+p fzf
