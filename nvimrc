@@ -124,7 +124,7 @@ let g:fzf_colors =
   \ 'header':  ['fg', 'Comment'] }
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --colors "path:fg:215,135,95" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>), 1, { 'options': '--color hl:223,hl+:222' }, 0)
+  \   'rg --column --line-number --no-heading --color=always --colors "path:fg:215,135,95" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>), 1, { 'options': '--color hl:223,hl+:222 --delimiter : --nth 4..' }, 0)
 
 " COC settings
 " Use tab for trigger completion with characters ahead and navigate.
@@ -160,14 +160,16 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 "Custom mappings
-"ctrl+p fzf
-map <C-p> :FZF<CR>
-"ctrl+c Toggle comments
+"Leader+p fzf
+map <Leader>p :FZF<CR>
+"Leader+/ ripgrep
+map <Leader>/ :Rg<CR>
+"Leader+c Toggle comments
 map <C-c> :call NERDComment(0,"toggle")<CR>
 "Leader+n Toggle file view
 map <Leader>n <plug>NERDTreeTabsToggle<CR>
 "Preview markdown files
-map <Leader>p :LivedownToggle<CR>
+map <Leader>l :LivedownToggle<CR>
 "Fix lint errors with ALE fixers
 map <Leader>f :ALEFix<CR>
 "Move vertically by visual line
