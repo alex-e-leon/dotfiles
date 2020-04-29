@@ -168,6 +168,8 @@ map <Leader>/ :Rg<CR>
 map <C-c> :call NERDComment(0,"toggle")<CR>
 "Leader+n Toggle file view
 map <Leader>n <plug>NERDTreeTabsToggle<CR>
+"Go to current file
+map <Leader>o :NERDTreeFind<CR>
 "Preview markdown files
 map <Leader>l :LivedownToggle<CR>
 "Fix lint errors with ALE fixers
