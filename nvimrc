@@ -43,7 +43,7 @@ set nocursorcolumn
 set nocursorline
 set relativenumber
 syntax sync minlines=256
-set synmaxcol=160
+set synmaxcol=250
 
 "Configure ALE syntax highlighting
 let g:ale_sign_error = '>>'
