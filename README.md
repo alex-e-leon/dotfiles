@@ -22,8 +22,14 @@ Current terminal colorscheme: [IC_Orange_PPL](https://github.com/mbadolato/iTerm
 
 ## OSX steps
 ### OSX settings
+
+_Note this can be automated with a script (see osx defaults cli tool)
+https://pawelgrzybek.com/change-macos-user-preferences-via-command-line/_
+
 - adjust keyboard speed
 - switch capslock to escape
+- turn off brightness auto adjust
+- increase mouse speed + switch scrolling
 
 ### Install software
 - Iterm2
