@@ -48,7 +48,7 @@ set synmaxcol=250
 "Configure ALE syntax highlighting
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '>-'
-let g:ale_fixers = {'javascript': ['eslint'], 'scss': ['stylelint']}
+let g:ale_fixers = {'javascript': ['eslint'], 'scss': ['stylelint'], 'typescript': ['tslint', 'prettier']}
 let g:ale_linters = {
 \ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jshint', 'standard'],
 \ 'typescript': ['tsserver', 'tslint'] }
