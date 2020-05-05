@@ -16,6 +16,11 @@ export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 # Ensure user-installed binaries take precedence
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
+# Setup virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+[ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh
+
 # Load antibody
 source <(antibody init)
 
