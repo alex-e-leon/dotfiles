@@ -64,6 +64,8 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.g
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 \\ install livedown
 npm i -g livedown
+\\ install python (optional)
+brew install python
 ```
 
 ### Finish
