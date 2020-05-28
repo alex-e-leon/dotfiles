@@ -16,7 +16,11 @@ Plug 'romainl/vim-cool'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
+"Note that installing coc plugins with coc install is better and these lines
+"should one day be replaced
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-tslint-plugin', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
 "https://github.com/neoclide/coc-json
 "https://github.com/neoclide/coc-html
 "https://github.com/neoclide/coc-highlight
@@ -48,10 +52,10 @@ set synmaxcol=250
 "Configure ALE syntax highlighting
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '>-'
-let g:ale_fixers = {'javascript': ['eslint'], 'scss': ['stylelint'], 'typescript': ['tslint', 'prettier']}
+let g:ale_fixers = {'javascript': ['eslint'], 'scss': ['stylelint'], 'typescript': []}
 let g:ale_linters = {
 \ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jshint', 'standard'],
-\ 'typescript': ['tsserver', 'tslint'] }
+\ 'typescript': [] }
 
 " configure airline to use powerline fonts
 let g:airline_powerline_fonts = 1
@@ -149,7 +153,15 @@ function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
-    call CocAction('doHover')
+    call CocActionAsync('doHover')
+  endif
+endfunction
+
+function! s:coc_or_ale()
+  if &filetype ==# 'typescript' || &filetype ==# 'typescript.tsx'
+    call CocActionAsync('format')
+  else
+    ALEFix
   endif
 endfunction
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -173,7 +185,7 @@ map <Leader>o :NERDTreeFind<CR>
 "Preview markdown files
 map <Leader>l :LivedownToggle<CR>
 "Fix lint errors with ALE fixers
-map <Leader>f :ALEFix<CR>
+map <Leader>f :call <SID>coc_or_ale()<CR>
 "Move vertically by visual line
 nnoremap j gj
 nnoremap k gk
