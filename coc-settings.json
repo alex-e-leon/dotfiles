@@ -1,4 +1,6 @@
 {
   "tsserver.npm": "/usr/local/bin/npm",
-  "tsserver.enableJavascript": false
+  "tsserver.enableJavascript": false,
+  "prettier.disableSuccessMessage": true,
+  "prettier.onlyUseLocalVersion": true
 }

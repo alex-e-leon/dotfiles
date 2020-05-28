@@ -52,10 +52,8 @@ set synmaxcol=250
 "Configure ALE syntax highlighting
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '>-'
-let g:ale_fixers = {'javascript': ['eslint'], 'scss': ['stylelint'], 'typescript': []}
-let g:ale_linters = {
-\ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jshint', 'standard'],
-\ 'typescript': [] }
+let g:ale_fixers = {'javascript': ['eslint'], 'scss': ['stylelint']}
+let g:ale_linters = {'javascript': ['eslint', 'flow', 'flow-language-server', 'jshint', 'standard']}
 
 " configure airline to use powerline fonts
 let g:airline_powerline_fonts = 1
