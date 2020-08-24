@@ -53,7 +53,7 @@ set synmaxcol=250
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '>-'
 let g:ale_fixers = {'javascript': ['eslint'], 'scss': ['stylelint']}
-let g:ale_linters = {'javascript': ['eslint', 'flow', 'flow-language-server', 'jshint', 'standard']}
+let g:ale_linters = {'javascript': ['eslint', 'flow', 'flow-language-server', 'jshint', 'standard'], 'typescript': [], 'typescript.tsx': []}
 
 " configure airline to use powerline fonts
 let g:airline_powerline_fonts = 1
@@ -81,6 +81,7 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 "Nerdtree config
 let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeWinSize = 40
 
 "Configure colorscheme
 set termguicolors

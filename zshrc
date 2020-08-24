@@ -37,6 +37,10 @@ antibody bundle lukechilds/zsh-better-npm-completion
 
 # User configuration
 
+# setup up and down history search
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
+
 #Make sure that locale is set properly
 export LC_ALL=en_AU.UTF-8
 
