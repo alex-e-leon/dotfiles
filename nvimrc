@@ -10,7 +10,6 @@ Plug 'shime/vim-livedown'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
-Plug 'w0rp/ale'
 " Better vim search highlighting
 Plug 'romainl/vim-cool'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -19,7 +18,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
 "Note that installing coc plugins with coc install is better and these lines
 "should one day be replaced
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-tslint-plugin', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-stylelint', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
 "https://github.com/neoclide/coc-json
 "https://github.com/neoclide/coc-html
@@ -47,13 +47,7 @@ set nocursorcolumn
 set nocursorline
 set relativenumber
 syntax sync minlines=256
-set synmaxcol=250
-
-"Configure ALE syntax highlighting
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '>-'
-let g:ale_fixers = {'javascript': ['eslint'], 'scss': ['stylelint']}
-let g:ale_linters = {'javascript': ['eslint', 'flow', 'flow-language-server', 'jshint', 'standard'], 'typescript': [], 'typescript.tsx': []}
+set synmaxcol=500
 
 " configure airline to use powerline fonts
 let g:airline_powerline_fonts = 1
@@ -156,13 +150,6 @@ function! s:show_documentation()
   endif
 endfunction
 
-function! s:coc_or_ale()
-  if &filetype ==# 'typescript' || &filetype ==# 'typescript.tsx'
-    call CocActionAsync('format')
-  else
-    ALEFix
-  endif
-endfunction
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
@@ -184,7 +171,7 @@ map <Leader>o :NERDTreeFind<CR>
 "Preview markdown files
 map <Leader>l :LivedownToggle<CR>
 "Fix lint errors with ALE fixers
-map <Leader>f :call <SID>coc_or_ale()<CR>
+map <Leader>f :call CocActionAsync('format')<CR>
 "Move vertically by visual line
 nnoremap j gj
 nnoremap k gk
