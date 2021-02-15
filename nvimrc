@@ -19,9 +19,9 @@ Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
 "should one day be replaced
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-stylelint', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-stylelintplus', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
-"https://github.com/neoclide/coc-json
+Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
 "https://github.com/neoclide/coc-html
 "https://github.com/neoclide/coc-highlight
 "https://github.com/neoclide/coc-jest
