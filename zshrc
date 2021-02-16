@@ -50,6 +50,9 @@ export GREP_OPTIONS='--color=auto'
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
 
+#Setup FZF to use ripgrep instead of find so that it ignores gitignored files
+export FZF_DEFAULT_COMMAND="rg --files --hidden -g '!.git/'"
+
 # Load in .alias file
 for file in ~/.{alias,}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file";
