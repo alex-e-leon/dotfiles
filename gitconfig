@@ -18,3 +18,5 @@
 	tool = Kaleidoscope
 [core]
 	editor = /usr/local/bin/nvim
+[pull]
+	rebase = false

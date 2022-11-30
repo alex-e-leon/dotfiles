@@ -13,6 +13,9 @@ export NVM_DIR="$HOME/.nvm"
 # Use python 3 instead of system python
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
+# rbenv default config
+eval "$(rbenv init - zsh)"
+
 # Ensure user-installed binaries take precedence
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 

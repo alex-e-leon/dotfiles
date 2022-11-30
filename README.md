@@ -73,3 +73,4 @@ pip install virtualenvwrapper
 ### Finish
 - Import iterm profile
 - Symlink dotfiles
+- Use .zshenv for local env variables/private keys

@@ -19,7 +19,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
 "should one day be replaced
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-stylelintplus', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-stylelint', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
 "https://github.com/neoclide/coc-html
@@ -128,29 +128,35 @@ command! -bang -nargs=* Rg
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-function! s:check_back_space() abort
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
 " Use K to show documentation in preview window.
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
   endif
 endfunction
 
-nnoremap <silent> K :call <SID>show_documentation()<CR>
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -163,7 +169,7 @@ map <Leader>p :FZF<CR>
 "Leader+/ ripgrep
 map <Leader>/ :Rg<CR>
 "Leader+c Toggle comments
-map <C-c> :call NERDComment(0,"toggle")<CR>
+map <C-c> :call nerdcommenter#Comment(0,"toggle")<CR>
 "Leader+n Toggle file view
 map <Leader>n <plug>NERDTreeTabsToggle<CR>
 "Go to current file
@@ -172,6 +178,8 @@ map <Leader>o :NERDTreeFind<CR>
 map <Leader>l :LivedownToggle<CR>
 "Fix lint errors with ALE fixers
 map <Leader>f :call CocActionAsync('format')<CR>
+" Symbol renaming.
+nmap <leader>r <plug>(coc-rename)
 "Move vertically by visual line
 nnoremap j gj
 nnoremap k gk
