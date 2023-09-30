@@ -3,5 +3,6 @@
   "tsserver.enableJavascript": false,
   "prettier.disableSuccessMessage": true,
   "prettier.onlyUseLocalVersion": true,
-  "suggest.noselect": true
+  "suggest.noselect": true,
+  "workspace.rootPatterns": ["package.json", ".git", ".hg", ".projections.json"]
 }
