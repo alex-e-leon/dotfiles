@@ -1,1 +1,7 @@
-Replace ALE with COC completely
+update lualine to show better status for nerdtree, maybe
+update lualine to have better colors like powerline used to have
+Look into updating colorscheme to include more types - https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-colors.md
+consider adding nvim-navic to winbar
+update nerd-commenter to nvim-commenter
+setup tabular for lining up text?
+Setup https://github.com/hrsh7th/nvim-linkedit/issues or https://github.com/windwp/nvim-ts-autotag to autorename tags only
