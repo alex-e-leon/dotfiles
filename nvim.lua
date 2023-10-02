@@ -121,17 +121,7 @@ require("mason-lspconfig").setup({
   automatic_installation = true,
 })
 require('lspconfig').tsserver.setup({ init_options = { preferences = { disableSuggestions = true }}})
-require('lspconfig').eslint.setup({
-  capabilities = capabilities,
-  flags = { debounce_text_changes = 500 },
-  on_attach = function(client, bufnr)
-    client.resolved_capabilities.document_formatting = true
-    if client.resolved_capabilities.document_formatting then
-      local au_lsp = vim.api.nvim_create_augroup("eslint_lsp", { clear = true })
-      vim.api.nvim_create_autocmd("BufWritePre", { pattern = "*", callback = function() vim.lsp.buf.formatting_sync() end, group = au_lsp, })
-    end
-  end,
-})
+require('lspconfig').eslint.setup({capabilities = capabilities})
 require('lspconfig').html.setup {capabilities = capabilities}
 require('lspconfig').cssmodules_ls.setup {capabilities = capabilities}
 -- disable css validation because it conflicts with stylelint + some css modules features, but keep it for completion
@@ -151,6 +141,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     -- Buffer local mappings. See `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    local eslintOrPrevEslint = client.name == 'eslint' 
+    for _, client in ipairs(vim.lsp.buf_get_clients()) do
+      if client.name == 'eslint' then eslintOrPrevEslint = true end
+    end
+
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
@@ -159,7 +155,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<Leader>r', vim.lsp.buf.rename, opts)
     vim.keymap.set({ 'n', 'v' }, '<LEADER>a', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', '<Leader>f', function()
-      vim.lsp.buf.format { async = true }
+      if eslintOrPrevEslint then
+        vim.cmd('EslintFixAll')
+      else 
+        vim.lsp.buf.format { async = true }
+      end
     end, opts)
   end,
 })
