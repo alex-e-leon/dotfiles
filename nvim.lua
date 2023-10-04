@@ -143,7 +143,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local opts = { buffer = ev.buf }
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     local eslintOrPrevEslint = client.name == 'eslint' 
-    for _, client in ipairs(vim.lsp.buf_get_clients()) do
+    for _, client in pairs(vim.lsp.buf_get_clients()) do
       if client.name == 'eslint' then eslintOrPrevEslint = true end
     end
 
