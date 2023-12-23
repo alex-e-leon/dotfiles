@@ -1,48 +1,57 @@
---Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
-local Plug = vim.fn['plug#']
-vim.call('plug#begin', '~/.local/share/nvim/plugged')
+-- Setup lazy.nvim package manager
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-Plug 'junegunn/vim-easy-align'
-Plug 'scrooloose/nerdtree' 
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'scrooloose/nerdcommenter'
-Plug('vim-scripts/loremipsum', { on = 'Loremipsum' })
-Plug 'shime/vim-livedown'
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
+--Install plugins 
+require("lazy").setup({
+  'junegunn/vim-easy-align',
+  'scrooloose/nerdtree',
+  'jistr/vim-nerdtree-tabs',
+  'scrooloose/nerdcommenter',
+  {'vim-scripts/loremipsum', on = 'Loremipsum'},
+  'shime/vim-livedown',
 
--- Autocomplete
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
+  -- Git
+  'tpope/vim-fugitive',
+  'airblade/vim-gitgutter',
 
--- LSP + linting
-Plug 'williamboman/mason.nvim'
-Plug 'williamboman/mason-lspconfig.nvim'
-Plug 'neovim/nvim-lspconfig'
+  -- Autocomplete
+  'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-buffer',
+  'hrsh7th/cmp-path',
+  'hrsh7th/cmp-cmdline',
+  'hrsh7th/nvim-cmp',
 
--- statusline
-Plug 'nvim-lualine/lualine.nvim'
-Plug 'nvim-tree/nvim-web-devicons'
+  -- LSP + linting
+  'williamboman/mason.nvim',
+  'williamboman/mason-lspconfig.nvim',
+  'neovim/nvim-lspconfig',
 
--- Better vim search highlighting
-Plug 'romainl/vim-cool'
-Plug('junegunn/fzf', { ['do'] = vim.fn['fzf#install()']})
-Plug 'junegunn/fzf.vim'
+  -- statusline
+  'nvim-lualine/lualine.nvim',
+  'nvim-tree/nvim-web-devicons',
 
--- Syntax highlighting
-Plug('nvim-treesitter/nvim-treesitter', {['do'] = vim.fn[':TSUpdate']})
+  -- Better vim search highlighting
+  'romainl/vim-cool',
+  {'junegunn/fzf.vim', dependencies = {'junegunn/fzf'}},
 
--- color schemes
-Plug 'AlessandroYorba/Despacio'
--- Plug 'mbbill/vim-seattle'
--- Plug 'AlessandroYorba/Sierra'
--- Plug 'thewatts/wattslandia' | Plug 'jordwalke/flatlandia'
+  -- Syntax highlighting
+  {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
 
--- Initialize plugin system
-vim.call('plug#end')
+  -- color schemes
+  'AlessandroYorba/Despacio',
+  -- 'mbbill/vim-seattle', 'AlessandroYorba/Sierra','thewatts/wattslandia', 'jordwalke/flatlandia'
+}, {})
 
 -- Configure colorscheme
 vim.o.termguicolors=true
