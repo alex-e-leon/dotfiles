@@ -5,11 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# NVM default config
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 # Use python 3 instead of system python
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
@@ -19,24 +14,10 @@ eval "$(rbenv init - zsh)"
 # Ensure user-installed binaries take precedence
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
-# Setup virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Devel
-[ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh
-
-# Load antibody
-source <(antibody init)
-
-# Load antibody plugins
-antibody bundle romkatv/powerlevel10k
-antibody bundle zsh-users/zsh-autosuggestions
-antibody bundle lukechilds/zsh-better-npm-completion
-# plugins to look at
-# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode
-# https://github.com/athityakumar/colorls
-# https://github.com/zsh-users/zsh-syntax-highlighting
-# + OhMyZsh plugins
-# plugins=(git colored-man-pages frontend-search globalias safe-paste)
+# Setup virtualenvwrapper - not working lately
+# export WORKON_HOME=$HOME/.virtualenvs
+# export PROJECT_HOME=$HOME/Devel
+# [ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh
 
 # User configuration
 
@@ -70,3 +51,22 @@ if [ -f '/Users/alex/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/alex/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/alex/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# NVM default config - for some reason this must come last
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Load antibody
+source <(antibody init)
+
+# Load antibody plugins
+antibody bundle romkatv/powerlevel10k
+antibody bundle zsh-users/zsh-autosuggestions
+antibody bundle lukechilds/zsh-better-npm-completion
+# plugins to look at
+# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode
+# https://github.com/athityakumar/colorls
+# https://github.com/zsh-users/zsh-syntax-highlighting
+# + OhMyZsh plugins
+# plugins=(git colored-man-pages frontend-search globalias safe-paste)

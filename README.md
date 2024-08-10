@@ -66,11 +66,16 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 npm i -g livedown
 \\ install python (optional)
 brew install python
-pip install virtualenv
-pip install virtualenvwrapper
+brew install virtualenv
+brew install virtualenvwrapper
 ```
 
 ### Finish
 - Import iterm profile
 - Symlink dotfiles
 - Use .zshenv for local env variables/private keys
+
+### Todo
+- finish setting up folding for nvim, use statusline to improve setup, and remove numbers
+    - fix issue with it taking so long to load?
+    - update keybindings, something like, fa - toggle fold all ff - toggle current fold. Figure out how to toggle

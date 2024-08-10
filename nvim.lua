@@ -15,8 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 --Install plugins 
 require("lazy").setup({
   'junegunn/vim-easy-align',
-  'scrooloose/nerdtree',
-  'jistr/vim-nerdtree-tabs',
+  {'jistr/vim-nerdtree-tabs', dependencies = {'scrooloose/nerdtree'}},
   'scrooloose/nerdcommenter',
   {'vim-scripts/loremipsum', on = 'Loremipsum'},
   'shime/vim-livedown',
@@ -26,16 +25,10 @@ require("lazy").setup({
   'airblade/vim-gitgutter',
 
   -- Autocomplete
-  'hrsh7th/cmp-nvim-lsp',
-  'hrsh7th/cmp-buffer',
-  'hrsh7th/cmp-path',
-  'hrsh7th/cmp-cmdline',
-  'hrsh7th/nvim-cmp',
+  {'hrsh7th/nvim-cmp', dependencies = {'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline'}},
 
   -- LSP + linting
-  'williamboman/mason.nvim',
-  'williamboman/mason-lspconfig.nvim',
-  'neovim/nvim-lspconfig',
+  {'neovim/nvim-lspconfig', dependencies = {'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim'}},
 
   -- statusline
   'nvim-lualine/lualine.nvim',
@@ -43,10 +36,15 @@ require("lazy").setup({
 
   -- Better vim search highlighting
   'romainl/vim-cool',
+
+  -- FZF search
   {'junegunn/fzf.vim', dependencies = {'junegunn/fzf'}},
 
   -- Syntax highlighting
   {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+
+  -- Better folding
+  {'kevinhwang91/nvim-ufo', dependencies = {'kevinhwang91/promise-async'}},
 
   -- color schemes
   'AlessandroYorba/Despacio',
@@ -108,7 +106,14 @@ cmp.setup.cmdline(':', {
   })
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+-- Tell the server the capability of foldingRange for UFO
+-- Neovim hasn't added foldingRange to default capabilities, users must add it manually
+capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true
+}
 
 -- setup LSP
 require("mason").setup()
@@ -129,19 +134,21 @@ require("mason-lspconfig").setup({
   },
   automatic_installation = true,
 })
-require('lspconfig').tsserver.setup({ init_options = { preferences = { disableSuggestions = true }}})
-require('lspconfig').eslint.setup({capabilities = capabilities})
-require('lspconfig').html.setup {capabilities = capabilities}
-require('lspconfig').cssmodules_ls.setup {capabilities = capabilities}
+
+local lspconfig = require('lspconfig')
+lspconfig.tsserver.setup {capabilities = capabilities, init_options = { preferences = { disableSuggestions = true }}}
+lspconfig.eslint.setup {capabilities = capabilities}
+lspconfig.html.setup {capabilities = capabilities}
+lspconfig.cssmodules_ls.setup {capabilities = capabilities}
 -- disable css validation because it conflicts with stylelint + some css modules features, but keep it for completion
-require('lspconfig').cssls.setup {capabilities = capabilities, settings = { css = { validate = false }}}
-require('lspconfig').graphql.setup {capabilities = capabilities}
-require('lspconfig').jsonls.setup {capabilities = capabilities}
-require('lspconfig').marksman.setup {capabilities = capabilities}
-require('lspconfig').mdx_analyzer.setup {capabilities = capabilities}
-require('lspconfig').stylelint_lsp.setup {capabilities = capabilities}
-require('lspconfig').tflint.setup {capabilities = capabilities}
-require('lspconfig').terraformls.setup {capabilities = capabilities}
+lspconfig.cssls.setup {capabilities = capabilities, settings = { css = { validate = false }}}
+lspconfig.graphql.setup {capabilities = capabilities}
+lspconfig.jsonls.setup {capabilities = capabilities}
+lspconfig.marksman.setup {capabilities = capabilities}
+lspconfig.mdx_analyzer.setup {capabilities = capabilities}
+lspconfig.stylelint_lsp.setup {capabilities = capabilities}
+lspconfig.tflint.setup {capabilities = capabilities}
+lspconfig.terraformls.setup {capabilities = capabilities}
 
 vim.keymap.set('n', 'K', vim.diagnostic.open_float)
 -- vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
@@ -208,6 +215,16 @@ require('lualine').setup({
     lualine_z = {'location', 'searchcount'},
   }
 })
+
+-- configure UFO
+vim.o.foldcolumn = '1' -- sets how many columns show folds
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = false
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+
+local ufo = require('ufo')
+ufo.setup()
 
 --Change updatetime from 4s to 250ms to make gitgutter more responsive
 vim.o.updatetime=250
@@ -283,3 +300,6 @@ vim.keymap.set('n', 'k', 'gk')
 
 vim.keymap.set('n', '[', vim.diagnostic.goto_next)
 vim.keymap.set('n', ']', vim.diagnostic.goto_prev)
+
+vim.keymap.set('n', 'zR', ufo.openAllFolds)
+vim.keymap.set('n', 'zM', ufo.closeAllFolds)
