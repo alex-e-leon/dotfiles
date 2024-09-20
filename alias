@@ -7,5 +7,9 @@ alias npm-personal="npm --userconfig=~/.npmrc-personal"
 alias update-boilerplate-npx="npx -p @domain-group/generator-fe-boilerplate -c update-boilerplate"
 alias fe-boilerplate-generator="npx -p yo -p @domain-group/generator-fe-boilerplate -c 'yo @domain-group/fe-boilerplate'"
 
+# sync fieldbook s3 buckets from prod to staging
+# useful flags, --delete also deletes any old files on staging, --dryrun tests that it works first
+alias sync-fieldbook-s3="aws s3 sync s3://fieldbook-user-uploads-production s3://fieldbook-user-uploads-staging"
+
 #Use different AWS profile
 aws-profile() { AWS_DEFAULT_PROFILE="$1"; }

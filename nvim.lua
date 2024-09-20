@@ -1,16 +1,26 @@
 -- Setup lazy.nvim package manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
 vim.opt.rtp:prepend(lazypath)
+
+-- Make sure to setup `mapleader` and `maplocalleader` before
+-- loading lazy.nvim so that mappings are correct.
+-- This is also a good place to setup other settings (vim.opt)
+--
+-- Set leader to space
+vim.g.mapleader=" "
 
 --Install plugins 
 require("lazy").setup({
@@ -56,14 +66,12 @@ vim.o.termguicolors=true
 vim.api.nvim_command('colorscheme despacio')
 
 -- Cursor
-vim.o.nocursorcolumn=true
-vim.o.nocursorline=true
 vim.o.relativenumber=true
 
 -- setup treesitter
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = {"lua", "diff", "gitignore", "gitcommit", "git_rebase", "css", "html", "json", "javascript", "typescript", "tsx", "graphql", "markdown", "markdown_inline", "regex", "terraform" },
+  ensure_installed = {"css", "html", "json", "javascript", "typescript", "tsx", "graphql", "markdown", "markdown_inline", "diff", "gitignore", "git_config", "gitcommit", "git_rebase", "regex", "yaml", "lua" },
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
   -- Automatically install missing parsers when entering buffer
@@ -119,36 +127,38 @@ capabilities.textDocument.foldingRange = {
 require("mason").setup()
 require("mason-lspconfig").setup({
   ensure_installed = {
-    'tsserver',
+    'vtsls',
     'eslint',
     'html',
-    'cssmodules_ls',
     'cssls',
+    'cssmodules_ls',
+    'css_variables',
+    'dockerls',
     'graphql',
+    'lua_ls',
     'jsonls',
     'marksman',
     'mdx_analyzer',
     'stylelint_lsp',
-    'tflint',
-    'terraformls',
   },
   automatic_installation = true,
 })
 
 local lspconfig = require('lspconfig')
-lspconfig.tsserver.setup {capabilities = capabilities, init_options = { preferences = { disableSuggestions = true }}}
+lspconfig.vtsls.setup {capabilities = capabilities, init_options = { preferences = { disableSuggestions = true }}}
 lspconfig.eslint.setup {capabilities = capabilities}
 lspconfig.html.setup {capabilities = capabilities}
 lspconfig.cssmodules_ls.setup {capabilities = capabilities}
 -- disable css validation because it conflicts with stylelint + some css modules features, but keep it for completion
 lspconfig.cssls.setup {capabilities = capabilities, settings = { css = { validate = false }}}
+lspconfig.css_variables.setup {capabilities = capabilities}
 lspconfig.graphql.setup {capabilities = capabilities}
 lspconfig.jsonls.setup {capabilities = capabilities}
+lspconfig.dockerls.setup {capabilities = capabilities}
+lspconfig.lua_ls.setup {capabilities = capabilities, settings = { Lua = { diagnostics = { globals = { 'vim' } } } } }
 lspconfig.marksman.setup {capabilities = capabilities}
 lspconfig.mdx_analyzer.setup {capabilities = capabilities}
 lspconfig.stylelint_lsp.setup {capabilities = capabilities}
-lspconfig.tflint.setup {capabilities = capabilities}
-lspconfig.terraformls.setup {capabilities = capabilities}
 
 vim.keymap.set('n', 'K', vim.diagnostic.open_float)
 -- vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
@@ -167,6 +177,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set('n', '<Leader>D', vim.lsp.buf.type_definition, opts)
     vim.keymap.set('n', '<Leader>r', vim.lsp.buf.rename, opts)
     vim.keymap.set({ 'n', 'v' }, '<LEADER>a', vim.lsp.buf.code_action, opts)
@@ -231,9 +242,6 @@ vim.o.updatetime=250
 
 -- Show line numbers
 vim.o.number=true
-
--- Set leader to space
-vim.g.mapleader=" "
 
 --Prevent vim re-rendering during macros
 vim.o.lazyredraw=true
