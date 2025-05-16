@@ -38,7 +38,7 @@ require("lazy").setup({
   { 'hrsh7th/nvim-cmp',      dependencies = { 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' } },
 
   -- LSP + linting
-  { 'neovim/nvim-lspconfig', dependencies = { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim' } },
+  { 'neovim/nvim-lspconfig', dependencies = { 'williamboman/mason.nvim' } },
 
   -- statusline
   'nvim-lualine/lualine.nvim',
@@ -114,6 +114,7 @@ cmp.setup.cmdline(':', {
   })
 })
 
+-- setup LSP
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 -- Tell the server the capability of foldingRange for UFO
@@ -122,46 +123,90 @@ capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true
 }
+vim.lsp.config("*", { capabilities = capabilities })
 
--- setup LSP
-require("mason").setup()
-require("mason-lspconfig").setup({
-  ensure_installed = {
-    'vtsls',
-    'eslint',
-    'html',
-    'cssls',
-    'cssmodules_ls',
-    'css_variables',
-    'dockerls',
-    'graphql',
-    'lua_ls',
-    'jsonls',
-    'marksman',
-    'mdx_analyzer',
-    'stylelint_lsp',
-  },
-  automatic_installation = true,
+-- Disable the default keybinds
+for _, bind in ipairs({ "grn", "gra", "gri", "grr" }) do
+  pcall(vim.keymap.del, "n", bind)
+end
+
+
+-- list the lsp servers to enable/install
+vim.lsp.enable('vtsls')
+vim.lsp.config('vtsls', {
+  settings = {
+    javascript = { suggestionActions = { enabled = false } },
+    typescript = { suggestionActions = { enabled = false } },
+  }
+})
+vim.lsp.enable('eslint')
+vim.lsp.enable('html')
+-- disable css validation because it conflicts with stylelint + some css modules features, but keep it for completion
+vim.lsp.enable('cssls')
+vim.lsp.config('cssls', { settings = { css = { validate = false } } })
+vim.lsp.enable('cssmodules_ls')
+vim.lsp.enable('css_variables')
+vim.lsp.enable('dockerls')
+vim.lsp.enable('graphql')
+vim.lsp.config('lua_ls', {
+  -- sets up vim bindings see https://github.com/neovim/nvim-lspconfig/blob/master/lsp/lua_ls.lua
+  on_init = function(client)
+    if client.workspace_folders then
+      local path = client.workspace_folders[1].name
+      if
+          path ~= vim.fn.stdpath('config')
+          and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+      then
+        return
+      end
+    end
+
+    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+      runtime = {
+        version = 'LuaJIT',
+        path = {
+          'lua/?.lua',
+          'lua/?/init.lua',
+        },
+      },
+      workspace = {
+        checkThirdParty = false,
+        library = {
+          vim.env.VIMRUNTIME
+        }
+      }
+    })
+  end,
+  settings = {
+    Lua = {}
+  }
 })
 
-local lspconfig = require('lspconfig')
-lspconfig.vtsls.setup { capabilities = capabilities, settings = {
-  javascript = { suggestionActions = { enabled = false } },
-  typescript = { suggestionActions = { enabled = false } },
-} }
-lspconfig.eslint.setup { capabilities = capabilities }
-lspconfig.html.setup { capabilities = capabilities }
-lspconfig.cssmodules_ls.setup { capabilities = capabilities }
--- disable css validation because it conflicts with stylelint + some css modules features, but keep it for completion
-lspconfig.cssls.setup { capabilities = capabilities, settings = { css = { validate = false } } }
-lspconfig.css_variables.setup { capabilities = capabilities }
-lspconfig.graphql.setup { capabilities = capabilities }
-lspconfig.jsonls.setup { capabilities = capabilities }
-lspconfig.dockerls.setup { capabilities = capabilities }
-lspconfig.lua_ls.setup { capabilities = capabilities, settings = { Lua = { diagnostics = { globals = { 'vim' } } } } }
-lspconfig.marksman.setup { capabilities = capabilities }
-lspconfig.mdx_analyzer.setup { capabilities = capabilities }
-lspconfig.stylelint_lsp.setup { capabilities = capabilities }
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('jsonls')
+vim.lsp.enable('marksman')
+vim.lsp.enable('mdx_analyzer')
+vim.lsp.enable('stylelint_lsp')
+vim.lsp.config('stylelint_lsp', {
+  on_attach = function(client)
+    vim.api.nvim_buf_create_user_command(0, 'LspStylelintFixAll', function()
+      local bufnr = vim.api.nvim_get_current_buf()
+
+      client:exec_cmd({
+        title = 'Fix all Stylelint errors for current buffer',
+        command = 'stylelint.applyAutoFixes',
+        arguments = {
+          {
+            uri = vim.uri_from_bufnr(bufnr),
+            version = vim.lsp.util.buf_versions[bufnr],
+          },
+        },
+      }, { bufnr = bufnr })
+    end, {})
+  end,
+})
+
+require("mason").setup()
 
 vim.keymap.set('n', 'K', vim.diagnostic.open_float)
 -- vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
@@ -171,9 +216,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Buffer local mappings. See `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    local eslintOrPrevEslint = client.name == 'eslint'
-    for _, client in pairs(vim.lsp.buf_get_clients()) do
-      if client.name == 'eslint' then eslintOrPrevEslint = true end
+    local eslintOrPrevEslint = client and client.name == 'eslint'
+    local styleLintOrPrevStylelint = client and client.name == 'stylelint_lsp'
+    for _, cur_client in pairs(vim.lsp.get_clients({ bufnr = 0 })) do
+      if cur_client.name == 'eslint' then eslintOrPrevEslint = true end
+      if cur_client.name == 'stylelint_lsp' then styleLintOrPrevStylelint = true end
     end
 
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
@@ -186,7 +233,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set({ 'n', 'v' }, '<LEADER>a', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', '<Leader>f', function()
       if eslintOrPrevEslint then
-        vim.cmd('EslintFixAll')
+        vim.api.nvim_command('LspEslintFixAll')
+      elseif styleLintOrPrevStylelint then
+        vim.api.nvim_command('LspStylelintFixAll')
       else
         vim.lsp.buf.format { async = true }
       end
