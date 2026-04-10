@@ -70,3 +70,13 @@ antibody bundle lukechilds/zsh-better-npm-completion
 # https://github.com/zsh-users/zsh-syntax-highlighting
 # + OhMyZsh plugins
 # plugins=(git colored-man-pages frontend-search globalias safe-paste)
+
+# Turn off homebrew analytics
+export HOMEBREW_NO_ANALYTICS=1
+
+# Activate mise in mise repos
+eval "$(mise activate zsh)"
+
+# setup agent-safehouse to sandbox claude usage to hash dir only
+safe() { safehouse --workdir=/Users/alex/programming/hash "$@"; }
+claude()   { safe claude --dangerously-skip-permissions "$@"; }

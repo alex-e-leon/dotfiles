@@ -13,3 +13,8 @@ alias sync-fieldbook-s3="aws s3 sync s3://fieldbook-user-uploads-production s3:/
 
 #Use different AWS profile
 aws-profile() { AWS_DEFAULT_PROFILE="$1"; }
+
+# Some aliases for commands that I often forget
+alias count-lines-of-code=scc
+alias time-machine-backup="asimov && tmutil startbackup --auto"
+alias convert-heic-to-jpg="magick mogrify -format jpg *.HEIC"

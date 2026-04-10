@@ -35,10 +35,10 @@ require("lazy").setup({
   'airblade/vim-gitgutter',
 
   -- Autocomplete
-  { 'hrsh7th/nvim-cmp',      dependencies = { 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' } },
+  { 'hrsh7th/nvim-cmp',                  dependencies = { 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' } },
 
   -- LSP + linting
-  { 'neovim/nvim-lspconfig', dependencies = { 'williamboman/mason.nvim' } },
+  { 'williamboman/mason-lspconfig.nvim', dependencies = { 'williamboman/mason.nvim', "neovim/nvim-lspconfig" } },
 
   -- statusline
   'nvim-lualine/lualine.nvim',
@@ -46,6 +46,9 @@ require("lazy").setup({
 
   -- Better vim search highlighting
   'romainl/vim-cool',
+
+  -- automatic title caseing
+  'christoomey/vim-titlecase',
 
   -- FZF search
   { 'junegunn/fzf.vim',                dependencies = { 'junegunn/fzf' } },
@@ -69,7 +72,7 @@ vim.api.nvim_command('colorscheme despacio')
 vim.o.relativenumber = true
 
 -- setup treesitter
-require 'nvim-treesitter.configs'.setup {
+require 'nvim-treesitter'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
   ensure_installed = { "css", "html", "json", "javascript", "typescript", "tsx", "graphql", "markdown", "markdown_inline", "diff", "gitignore", "git_config", "gitcommit", "git_rebase", "regex", "yaml", "lua" },
   -- Install parsers synchronously (only applied to `ensure_installed`)
@@ -130,24 +133,35 @@ for _, bind in ipairs({ "grn", "gra", "gri", "grr" }) do
   pcall(vim.keymap.del, "n", bind)
 end
 
-
 -- list the lsp servers to enable/install
-vim.lsp.enable('vtsls')
+local lspServers = {
+  'vtsls',
+  'eslint',
+  'oxlint',
+  'html',
+  'cssls',
+  'cssmodules_ls',
+  'css_variables',
+  'dockerls',
+  'graphql',
+  'lua_ls',
+  'jsonls',
+  'marksman',
+  'mdx_analyzer',
+  'stylelint_lsp',
+}
+
+require("mason").setup()
+require("mason-lspconfig").setup { ensure_installed = lspServers }
+
 vim.lsp.config('vtsls', {
   settings = {
     javascript = { suggestionActions = { enabled = false } },
     typescript = { suggestionActions = { enabled = false } },
   }
 })
-vim.lsp.enable('eslint')
-vim.lsp.enable('html')
 -- disable css validation because it conflicts with stylelint + some css modules features, but keep it for completion
-vim.lsp.enable('cssls')
 vim.lsp.config('cssls', { settings = { css = { validate = false } } })
-vim.lsp.enable('cssmodules_ls')
-vim.lsp.enable('css_variables')
-vim.lsp.enable('dockerls')
-vim.lsp.enable('graphql')
 vim.lsp.config('lua_ls', {
   -- sets up vim bindings see https://github.com/neovim/nvim-lspconfig/blob/master/lsp/lua_ls.lua
   on_init = function(client)
@@ -181,12 +195,6 @@ vim.lsp.config('lua_ls', {
     Lua = {}
   }
 })
-
-vim.lsp.enable('lua_ls')
-vim.lsp.enable('jsonls')
-vim.lsp.enable('marksman')
-vim.lsp.enable('mdx_analyzer')
-vim.lsp.enable('stylelint_lsp')
 vim.lsp.config('stylelint_lsp', {
   on_attach = function(client)
     vim.api.nvim_buf_create_user_command(0, 'LspStylelintFixAll', function()
@@ -206,7 +214,9 @@ vim.lsp.config('stylelint_lsp', {
   end,
 })
 
-require("mason").setup()
+for _, server in pairs(lspServers) do
+  vim.lsp.enable(server)
+end
 
 vim.keymap.set('n', 'K', vim.diagnostic.open_float)
 -- vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
@@ -340,7 +350,7 @@ vim.g.fzf_colors = {
   header = { 'fg', 'Comment' }
 }
 vim.api.nvim_create_user_command('Rg',
-  "call fzf#vim#grep('rg --column --sort path --line-number --no-heading --color=always --colors \"path:fg:215,135,95\" --colors \"line:fg:128,128,128\" --smart-case '.shellescape(<q-args>), 1, { 'options': '--color hl:223,hl+:222 --delimiter : --nth 4..' }, 0)",
+  "call fzf#vim#grep('rg --glob \"!*.fixture.*\" --column --sort path --line-number --no-heading --color=always --colors \"path:fg:215,135,95\" --colors \"line:fg:128,128,128\" --smart-case '.shellescape(<q-args>), 1, { 'options': '--color hl:223,hl+:222 --delimiter : --nth 4..' }, 0)",
   { bang = true, nargs = "*" })
 
 -- Custom mappings
@@ -356,6 +366,8 @@ vim.keymap.set('', '<Leader>n', '<plug>NERDTreeTabsToggle<CR>')
 vim.keymap.set('', '<Leader>o', ':NERDTreeFind<CR>')
 -- Preview markdown files
 vim.keymap.set('', '<Leader>l', ':LivedownToggle<CR>')
+-- Set custom titlecase
+vim.keymap.set('', '<Leader>t', '<plug>Titlecase<CR>')
 -- Move vertically by visual line
 vim.keymap.set('n', 'j', 'gj')
 vim.keymap.set('n', 'k', 'gk')

@@ -68,6 +68,8 @@ npm i -g livedown
 brew install python
 brew install virtualenv
 brew install virtualenvwrapper
+\\ isntall asimov to make time-machine work properly (optional)
+brew install asimov 
 ```
 
 ### Finish
