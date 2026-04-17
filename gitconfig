@@ -18,6 +18,6 @@
 [diff]
 	tool = Kaleidoscope
 [core]
-	editor = /usr/local/bin/nvim
+	editor = $(brew --prefix)/bin/nvim
 [pull]
 	rebase = false
