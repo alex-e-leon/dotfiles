@@ -1,3 +1,5 @@
+# plugin that setsup fast autocomplete
+mattmc3/ez-compinit
 romkatv/powerlevel10k
 zsh-users/zsh-autosuggestions
 lukechilds/zsh-better-npm-completion

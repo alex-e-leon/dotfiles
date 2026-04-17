@@ -52,7 +52,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Load antidote
-autoload -Uz compinit && compinit
 source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
 antidote load
 
