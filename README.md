@@ -72,6 +72,15 @@ brew install virtualenvwrapper
 brew install asimov 
 ```
 
+### Fix nerdree-tabs
+Update timer values on `.local/share/nvim/lazy/vim-nerdtree-tabs/nerdtree_plugin/`
+to:
+```
+    call timer_start(1, {-> execute('q') })
+    call timer_start(20, {-> execute('vertical resize 31') })
+    call timer_start(25, {-> execute('wincmd w') })
+```
+
 ### Finish
 - Import iterm profile
 - Symlink dotfiles

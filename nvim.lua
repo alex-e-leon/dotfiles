@@ -25,7 +25,7 @@ vim.g.mapleader = " "
 --Install plugins
 require("lazy").setup({
   'junegunn/vim-easy-align',
-  { 'jistr/vim-nerdtree-tabs', dependencies = { 'scrooloose/nerdtree' } },
+  { 'mattmartini/vim-nerdtree-tabs', dependencies = { 'scrooloose/nerdtree' } },
   'scrooloose/nerdcommenter',
   { 'vim-scripts/loremipsum',  on = 'Loremipsum' },
   'shime/vim-livedown',
