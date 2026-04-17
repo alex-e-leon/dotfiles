@@ -5,3 +5,6 @@ consider adding nvim-navic to winbar
 update nerd-commenter to nvim-commenter
 setup tabular for lining up text?
 Setup https://github.com/hrsh7th/nvim-linkedit/issues or https://github.com/windwp/nvim-ts-autotag to autorename tags only
+finish setting up folding for nvim, use statusline to improve setup, and remove numbers
+  fix issue with it taking so long to load?
+  update keybindings, something like, fa - toggle fold all ff - toggle current fold. Figure out how to toggle

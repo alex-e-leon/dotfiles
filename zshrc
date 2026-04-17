@@ -57,19 +57,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Load antibody
-source <(antibody init)
-
-# Load antibody plugins
-antibody bundle romkatv/powerlevel10k
-antibody bundle zsh-users/zsh-autosuggestions
-antibody bundle lukechilds/zsh-better-npm-completion
-# plugins to look at
-# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode
-# https://github.com/athityakumar/colorls
-# https://github.com/zsh-users/zsh-syntax-highlighting
-# + OhMyZsh plugins
-# plugins=(git colored-man-pages frontend-search globalias safe-paste)
+# Load antidote
+source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
+antidote load
 
 # Turn off homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1

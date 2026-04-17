@@ -1,0 +1,10 @@
+romkatv/powerlevel10k
+zsh-users/zsh-autosuggestions
+lukechilds/zsh-better-npm-completion
+
+# plugins to look at
+# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode
+# https://github.com/athityakumar/colorls
+# https://github.com/zsh-users/zsh-syntax-highlighting
+# + OhMyZsh plugins
+# plugins=(git colored-man-pages frontend-search globalias safe-paste)

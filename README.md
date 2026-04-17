@@ -44,30 +44,14 @@ https://brew.sh/
 
 ### Install packages
 ```
-\\ neovim
-brew install neovim
-\\ npm base install required for ts-server
-brew install npm 
-\\ antibody zsh plugin manager
-brew install getantibody/tap/antibody
-\\ hack font
-brew tap homebrew/cask-fonts   
-brew cask install font-hack-nerd-font
-\\ install fzf
-brew install fzf
-\\ install rg
-brew install ripgrep
-\\ Install neovim plug
-\\ https://github.com/junegunn/vim-plug
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim  
-\\ Install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+\\ install basics + antidote zsh plugin manager, fzf, rg
+brew install neovim mise antidote fzf ripgrep
+\\ install hack font
+brew install --cask font-hack-nerd-font
+\\ install node + npm (replace with latest)
+mise use --global node@26 
 \\ install livedown
 npm i -g livedown
-\\ install python (optional)
-brew install python
-brew install virtualenv
-brew install virtualenvwrapper
 \\ isntall asimov to make time-machine work properly (optional)
 brew install asimov 
 ```
@@ -85,8 +69,3 @@ to:
 - Import iterm profile
 - Symlink dotfiles
 - Use .zshenv for local env variables/private keys
-
-### Todo
-- finish setting up folding for nvim, use statusline to improve setup, and remove numbers
-    - fix issue with it taking so long to load?
-    - update keybindings, something like, fa - toggle fold all ff - toggle current fold. Figure out how to toggle
