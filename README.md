@@ -45,7 +45,7 @@ https://brew.sh/
 ### Install packages
 ```
 \\ install basics + antidote zsh plugin manager, fzf, rg
-brew install neovim mise antidote fzf ripgrep
+brew install neovim mise antidote fzf ripgrep compdef
 \\ install hack font
 brew install --cask font-hack-nerd-font
 \\ install node + npm (replace with latest)
