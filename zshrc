@@ -55,8 +55,10 @@ export NVM_DIR="$HOME/.nvm"
 source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
 antidote load
 
-# Turn off homebrew analytics
+# Turn off analytics
 export HOMEBREW_NO_ANALYTICS=1
+export GH_TELEMETRY=false
+export DO_NOT_TRACK=true
 
 # Activate mise in mise repos
 eval "$(mise activate zsh)"
