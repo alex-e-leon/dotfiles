@@ -909,7 +909,7 @@
 ;; Use --enable=all-agents,all-apps to restore legacy all-profile behavior.
 
 ;; #safehouse-test-id:workdir-grant# Allow read/write access to the selected workdir.
-;; Generated ancestor directory literals for selected workdir: /Users/alex/programming/hash/hash
+;; Generated ancestor directory literals for selected workdir: /Users/alex/programming/hash
 ;;
 ;; Why file-read* (not file-read-metadata) with literal (not subpath):
 ;; Agents (notably Claude Code) call readdir() on every ancestor of the working
@@ -925,6 +925,7 @@
     (literal "/Users/alex/programming")
     (literal "/Users/alex/programming/hash")
     (literal "/Users/alex/programming/hash/hash")
+    (literal "/Users/alex/programming/hash-second-version")
 )
-(allow file-read* file-write* (subpath "/Users/alex/programming/hash/hash"))
-
+(allow file-read* file-write* (subpath "/Users/alex/programming/hash"))
+(allow file-read* file-write* (subpath "/Users/alex/programming/hash-second-version"))

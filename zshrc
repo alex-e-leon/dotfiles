@@ -66,3 +66,6 @@ eval "$(mise activate zsh)"
 # setup agent-safehouse to sandbox claude usage to hash dir only
 safe() { safehouse --workdir=/Users/alex/programming/hash "$@"; }
 claude()   { safe claude --dangerously-skip-permissions "$@"; }
+
+safe2() { safehouse --workdir=/Users/alex/programming/hash-second-version "$@"; }
+claude2()   { safe2 claude --dangerously-skip-permissions "$@"; }
