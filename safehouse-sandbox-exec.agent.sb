@@ -924,8 +924,5 @@
     (literal "/Users/alex")
     (literal "/Users/alex/programming")
     (literal "/Users/alex/programming/hash")
-    (literal "/Users/alex/programming/hash/hash")
-    (literal "/Users/alex/programming/hash-second-version")
 )
 (allow file-read* file-write* (subpath "/Users/alex/programming/hash"))
-(allow file-read* file-write* (subpath "/Users/alex/programming/hash-second-version"))

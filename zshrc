@@ -56,16 +56,19 @@ source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
 antidote load
 
 # Turn off analytics
+export DO_NOT_TRACK=true
 export HOMEBREW_NO_ANALYTICS=1
 export GH_TELEMETRY=false
-export DO_NOT_TRACK=true
+export NEXT_TELEMETRY_DISABLED=1
+export CHECKPOINT_DISABLE=1 # hashicorp
+export DISABLE_TELEMETRY=1 # From claude
+export CLAUDE_CODE_ENABLE_TELEMETRY=0 
+export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 
 # Activate mise in mise repos
 eval "$(mise activate zsh)"
 
 # setup agent-safehouse to sandbox claude usage to hash dir only
-safe() { safehouse --workdir=/Users/alex/programming/hash "$@"; }
+export SAFEHOUSE_APPEND_PROFILE="$HOME/.config/sandbox-exec/agent.sb"
+safe() { safehouse --append-profile="$SAFEHOUSE_APPEND_PROFILE" --workdir=~/programming/hash "$@"; }
 claude()   { safe claude --dangerously-skip-permissions "$@"; }
-
-safe2() { safehouse --workdir=/Users/alex/programming/hash-second-version "$@"; }
-claude2()   { safe2 claude --dangerously-skip-permissions "$@"; }
