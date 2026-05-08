@@ -69,7 +69,8 @@ require("lazy").setup({
     dependencies = { "folke/snacks.nvim" },
     config = true,
     opts = {
-      terminal_cmd = 'safehouse --append-profile=' .. vim.env.SAFEHOUSE_APPEND_PROFILE .. ' --workdir=~/programming/hash claude --dangerously-skip-permissions',
+      terminal_cmd = 'safehouse --append-profile=' ..
+          vim.env.SAFEHOUSE_APPEND_PROFILE .. ' --workdir=~/programming/hash claude --dangerously-skip-permissions',
     },
     keys = {
       { "<leader>a",  nil,                              desc = "AI/Claude Code" },
@@ -167,6 +168,7 @@ local lspServers = {
   'vtsls',
   'eslint',
   'oxlint',
+  'biome',
   'html',
   'cssls',
   'cssmodules_ls',
@@ -254,30 +256,23 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     -- Buffer local mappings. See `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    local eslintOrPrevEslint = client and client.name == 'eslint'
-    local styleLintOrPrevStylelint = client and client.name == 'stylelint_lsp'
-    for _, cur_client in pairs(vim.lsp.get_clients({ bufnr = 0 })) do
-      if cur_client.name == 'eslint' then eslintOrPrevEslint = true end
-      if cur_client.name == 'stylelint_lsp' then styleLintOrPrevStylelint = true end
-    end
-
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', '<Leader>D', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set('n', '<Leader>r', vim.lsp.buf.rename, opts)
-    vim.keymap.set({ 'n', 'v' }, '<LEADER>a', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', '<Leader>f', function()
-      if eslintOrPrevEslint then
-        vim.api.nvim_command('LspEslintFixAll')
-      elseif styleLintOrPrevStylelint then
-        vim.api.nvim_command('LspStylelintFixAll')
-      else
-        vim.lsp.buf.format { async = true }
-      end
+    vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', '<leader>f', function()
+      vim.lsp.buf.format()
+      vim.lsp.buf.code_action({
+        context = { only = { "source.fixAll" }, diagnostics = {} },
+        filter = function(_, client_id)
+          local client = vim.lsp.get_client_by_id(client_id)
+          return client ~= nil and client.name ~= "vtsls"
+        end,
+        apply = true,
+      })
     end, opts)
   end,
 })
@@ -384,19 +379,19 @@ vim.api.nvim_create_user_command('Rg',
 
 -- Custom mappings
 -- Leader+p fzf
-vim.keymap.set('', '<Leader>p', ':FZF<CR>')
+vim.keymap.set('', '<leader>p', ':FZF<CR>')
 -- Leader+/ ripgrep
-vim.keymap.set('', '<Leader>/', ':Rg<CR>')
+vim.keymap.set('', '<leader>/', ':Rg<CR>')
 -- Leader+c Toggle comments
 vim.keymap.set('', '<C-c>', ':call nerdcommenter#Comment(0,"toggle")<CR>')
 -- Leader+n Toggle file view
-vim.keymap.set('', '<Leader>n', '<plug>NERDTreeTabsToggle<CR>')
+vim.keymap.set('', '<leader>n', '<plug>NERDTreeTabsToggle<CR>')
 -- Go to current file
-vim.keymap.set('', '<Leader>o', ':NERDTreeFind<CR>')
+vim.keymap.set('', '<leader>o', ':NERDTreeFind<CR>')
 -- Preview markdown files
-vim.keymap.set('', '<Leader>l', ':LivedownToggle<CR>')
+vim.keymap.set('', '<leader>l', ':LivedownToggle<CR>')
 -- Set custom titlecase
-vim.keymap.set('', '<Leader>t', '<plug>Titlecase<CR>')
+vim.keymap.set('', '<leader>t', '<plug>Titlecase<CR>')
 -- Move vertically by visual line
 vim.keymap.set('n', 'j', 'gj')
 vim.keymap.set('n', 'k', 'gk')
